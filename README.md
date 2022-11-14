@@ -15,6 +15,7 @@ funcional para la REGULARIDAD.
 
 ----------------------------------------------------------------------------------------------------------------
 ● Enunciado general del tp. Uno o dos parrafos describiendo el sistema.
+----------------------------------------------------------------------------------------------------------------
 El sistema a desarrollar es para una distribuidora de productos, con el cual podrán tener un
 registro de los mismos, como también de sus clientes. Creando, modificando, eliminando y
 listando y poder así chequear en cualquier momento la información del sistema.
@@ -30,6 +31,7 @@ sharing
 ----------------------------------------------------------------------------------------------------------------
 ● Lista del NOMBRE de los Casos de Uso/User Stories de cada requerimiento
 funcional para la REGULARIDAD.
+----------------------------------------------------------------------------------------------------------------
 ABMC:
 -CUUU - 001: AltaCliente.
 -CUUU - 002: BajaCliente
