@@ -31,6 +31,7 @@ public class Controlador extends HttpServlet {
 	
 	Tipo_Articulo tipoArt = new Tipo_Articulo();
 	TipoArticuloDAO tipoArtDAO = new TipoArticuloDAO();
+	
 
 	int idCliente;
 	int idArticulo;
@@ -61,42 +62,43 @@ public class Controlador extends HttpServlet {
 		if (menu.equals("Articulos")) {
 			switch (accion) {
 			case "Listar":
-				List lista = articuloDAO.Listar();
+				List lista= articuloDAO.Listar();
 				request.setAttribute("articulo", lista);
 
 				break;
 			
 		
 			case "Agregar":
-				
-				articulo.setTa(tipoArt);
 				String nombre = request.getParameter("txtnombre"); 
-				String id_tipo_articulo = request.getParameter("txtid_producto");
+				String descripcion = request.getParameter("txttipo_articulo");
 				String stock = request.getParameter("txtstock"); 
-				String precio = request.getParameter("txtprecio"); 
+				String precio = request.getParameter("txtprecio");
+				tipoArt = tipoArtDAO.buscarTipo(descripcion);
 				articulo.setNombre(nombre);
-				tipoArt.setId(Integer.parseInt(id_tipo_articulo)); 
+				tipoArt.setDescripcion(descripcion); 
 				articulo.setStock(stock);
 				articulo.setPrecio(precio);
-		  
-				articuloDAO.Agregar(articulo, tipoArt);
+				articulo.setTa(tipoArt);
+				articuloDAO.Agregar(articulo);
 				request.getRequestDispatcher("Controlador?menu=Articulos&accion=Listar").forward(request, response);
 		  
 		  	break;
 		  	
 			case "Actualizar":
 				Articulo articulo1 = new Articulo();
-				articulo1.setTa(tipoArt);
+				Tipo_Articulo tipoArt1 = new Tipo_Articulo();
 				String nombreUpdate = request.getParameter("txtnombre"); 
-				String id_tipo_articuloUpdate = request.getParameter("txtid_producto");
+				String descripcionUpdate = request.getParameter("txttipo_articulo");
 				String stockUpdate = request.getParameter("txtstock"); 
 				String precioUpdate = request.getParameter("txtprecio"); 
+				tipoArt1 = tipoArtDAO.buscarTipo(descripcionUpdate);
 				articulo1.setNombre(nombreUpdate);
-				tipoArt.setId(Integer.parseInt(id_tipo_articuloUpdate));
+				tipoArt1.setDescripcion(descripcionUpdate); 
 				articulo1.setStock(stockUpdate);
 				articulo1.setPrecio(precioUpdate);
+				articulo1.setTa(tipoArt1);
 				articulo1.setId(idArticulo);
-				articuloDAO.Actualizar(articulo1, tipoArt);
+				articuloDAO.Actualizar(articulo1);
 				request.getRequestDispatcher("Controlador?menu=Articulos&accion=Listar").forward(request, response);
 
 				break;
@@ -112,7 +114,7 @@ public class Controlador extends HttpServlet {
 			case "Eliminar":
 
 				idArticulo = Integer.parseInt(request.getParameter("id"));
-				clienteDAO.Eliminar(idArticulo);
+				articuloDAO.Eliminar(idArticulo);
 				request.getRequestDispatcher("Controlador?menu=Articulos&accion=Listar").forward(request, response);
 
 				break;
@@ -191,9 +193,7 @@ public class Controlador extends HttpServlet {
 					
 				case "Agregar":
 
-					String id = request.getParameter("txtid");
 					String descripcion = request.getParameter("txtdescripcion");
-					tipoArt.setId(Integer.parseInt(id));
 					tipoArt.setDescripcion(descripcion);
 
 					tipoArtDAO.Agregar(tipoArt);
@@ -204,6 +204,7 @@ public class Controlador extends HttpServlet {
 					Tipo_Articulo tipo_art1 = new Tipo_Articulo();
 					String descripcionUpdate = request.getParameter("txtdescripcion");
 					tipo_art1.setDescripcion(descripcionUpdate);
+					tipo_art1.setId(idTipo);
 					tipoArtDAO.Actualizar(tipo_art1);
 					request.getRequestDispatcher("Controlador?menu=TipoArticulo&accion=Listar").forward(request, response);
 
@@ -212,14 +213,36 @@ public class Controlador extends HttpServlet {
 
 					idTipo = Integer.parseInt(request.getParameter("id"));
 					Tipo_Articulo tipo_articulo = tipoArtDAO.ListarPorId(idTipo);
-					request.setAttribute("clienteSeleccionado", cliente);
+					request.setAttribute("tipoArticuloSeleccionado", tipo_articulo);
 					request.getRequestDispatcher("Controlador?menu=TipoArticulo&accion=Listar").forward(request, response);
-			  
+					break;
 					
+				case "Eliminar":
+
+					idTipo = Integer.parseInt(request.getParameter("id"));
+					articuloDAO.EliminarTipo(idTipo); 
+					tipoArtDAO.Eliminar(idTipo);
+					request.getRequestDispatcher("Controlador?menu=TipoArticulo&accion=Listar").forward(request, response);
+
+					break;
 			  }
 		  request.getRequestDispatcher("TipoArticulo.jsp").forward(request, response); 
 			  }
 		  if (menu.equals("Pedidos")) {
+			  switch (accion) {
+			  
+			  case "BuscarCliente":
+                  int idCliente = Integer.parseInt(request.getParameter("txtidcliente"));
+                  cliente = clienteDAO.buscarClienteId(idCliente);
+                  request.setAttribute("cliente", cliente);
+                  break;
+              
+			  case "BuscarProducto":
+                  int idArticulo = Integer.parseInt(request.getParameter("txtidproducto"));
+                  articulo = articuloDAO.buscarArticuloId(idArticulo);
+                  request.setAttribute("articulo", articulo);
+                  break;
+			  }
 				request.getRequestDispatcher("Pedidos.jsp").forward(request, response);
 			}
 		 

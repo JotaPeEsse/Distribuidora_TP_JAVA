@@ -12,7 +12,7 @@ public class Conexion {
     Connection con;
     String url="jdbc:mysql://localhost:3306/distribuidora";
     String usuario = "root";
-    String clave = "1234";
+    String clave = "1942";
    
    public Connection Conexion(){
        

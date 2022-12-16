@@ -42,12 +42,11 @@ public class TipoArticuloDAO {
 	}
 
 	public int Agregar(Tipo_Articulo tipoArt) {
-		String sentencia = "INSERT INTO tipo_articulo (id_tipo_articulo, descripcion) VALUES (?, ?)";
+		String sentencia = "INSERT INTO tipo_articulo (descripcion) VALUES (?)";
 		try {
 			con = cn.Conexion();
 			ps = con.prepareStatement(sentencia);
-			ps.setInt(1, tipoArt.getId());
-			ps.setString(2, tipoArt.getDescripcion());
+			ps.setString(1, tipoArt.getDescripcion());
 
 			ps.executeUpdate();
 		} catch (SQLException ex) {
@@ -77,23 +76,72 @@ public class TipoArticuloDAO {
 
     }
 	
-	public int Actualizar(Tipo_Articulo ta) {
-        String sentencia = "UPDATE tipo_articulo set sdescripcion=? WHERE id=?";
+	public void Actualizar(Tipo_Articulo ta) {
+        String sentencia = "UPDATE tipo_articulo set descripcion=? WHERE id_tipo_articulo=?";
         try {
             con = cn.Conexion();
             ps = con.prepareStatement(sentencia);
             ps.setString(1, ta.getDescripcion());
-         
-     
             ps.setInt(2, ta.getId());
             ps.executeUpdate();
 
         } catch (SQLException ex) {
             Logger.getLogger(TipoArticuloDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return r;
     }
-
 	
+	public void Eliminar(int id) {
 
+        String sql = "DELETE FROM tipo_articulo WHERE id_tipo_articulo=" + id;
+        con = cn.Conexion();
+        try {
+            ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          
+
+    }
+	
+	public Tipo_Articulo buscarTipo(String descripcion) {
+		Tipo_Articulo ta = new Tipo_Articulo();
+		String consulta = "SELECT * FROM tipo_articulo WHERE descripcion= ?";
+		con = cn.Conexion();
+        try {
+            ps = con.prepareStatement(consulta);
+            ps.setString(1, descripcion);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+            	ta.setId(rs.getInt("id_tipo_articulo"));
+            	ta.setDescripcion(rs.getString("descripcion")); 
+               
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+		
+		return ta;
+	}
+	
+	public Tipo_Articulo buscarTipoId(int id) {
+		Tipo_Articulo ta = new Tipo_Articulo();
+		String consulta = "SELECT * FROM tipo_articulo WHERE id_tipo_articulo= ?";
+		con = cn.Conexion();
+        try {
+            ps = con.prepareStatement(consulta);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+            	ta.setId(rs.getInt("id_tipo_articulo"));
+            	ta.setDescripcion(rs.getString("descripcion")); 
+               
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+		
+		return ta;
+	}
+	
 }

@@ -83,7 +83,7 @@ public class ClienteDAO {
 
     }
 
-    public int Actualizar(Cliente cliente) {
+    public void Actualizar(Cliente cliente) {
         String sentencia = "UPDATE cliente set nombre=?,apellido=?,telefono=?,direccion=? WHERE id=?";
         try {
             con = cn.Conexion();
@@ -100,7 +100,6 @@ public class ClienteDAO {
         } catch (SQLException ex) {
             Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return r;
     }
     public void Eliminar(int id) {
 
@@ -112,7 +111,31 @@ public class ClienteDAO {
         } catch (SQLException ex) {
             Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
 
     }
 
+	public Cliente buscarClienteId(int id) {
+		Cliente cliente = new Cliente();
+		String consulta = "SELECT * FROM cliente WHERE id= ?";
+		con = cn.Conexion();
+        try {
+            ps = con.prepareStatement(consulta);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+            	cliente.setId(rs.getInt("id"));
+            	cliente.setNombre(rs.getString("nombre"));
+            	cliente.setApellido(rs.getString("apellido"));
+            	cliente.setTelefono(rs.getString("telefono"));
+            	cliente.setDireccion(rs.getString("apellido"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+		
+		return cliente;
+	}
+    
+    
 }
