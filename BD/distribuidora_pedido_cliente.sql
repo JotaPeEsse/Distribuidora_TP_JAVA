@@ -16,31 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `pedido`
+-- Table structure for table `pedido_cliente`
 --
 
-DROP TABLE IF EXISTS `pedido`;
+DROP TABLE IF EXISTS `pedido_cliente`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `pedido` (
-  `id_pedido` int unsigned NOT NULL AUTO_INCREMENT,
-  `fecha` varchar(255) NOT NULL,
-  `cliente` int unsigned NOT NULL,
-  `total` float unsigned NOT NULL,
-  `pagado` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id_pedido`),
-  KEY `cliente` (`cliente`),
-  CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `pedido_cliente` (
+  `id_pedido` int unsigned NOT NULL,
+  `id_articulo` int unsigned NOT NULL,
+  UNIQUE KEY `id_pedido_UNIQUE` (`id_pedido`),
+  KEY `articulo_idx` (`id_articulo`),
+  CONSTRAINT `articulo` FOREIGN KEY (`id_articulo`) REFERENCES `articulo` (`id_articulo`),
+  CONSTRAINT `pedido` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `pedido`
+-- Dumping data for table `pedido_cliente`
 --
 
-LOCK TABLES `pedido` WRITE;
-/*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
+LOCK TABLES `pedido_cliente` WRITE;
+/*!40000 ALTER TABLE `pedido_cliente` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pedido_cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
